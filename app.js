@@ -16,7 +16,12 @@ app.use(express.json());
 //CReating a middlewere that exicutes everytime the route is running. 
 // app.use('/sessions')
 
-//Routes
+//Import routes
+const routesRoute = require('./routes/routes');
+
+app.use('/routes', routesRoute)
+
+//routes homepage
 app.get('/', (req, res) =>{
     res.send('We are homepage');
 })
