@@ -4,6 +4,8 @@ const { raw } = require('express');
 const express = require('express');
 const mongoose = require('mongoose');
 require("dotenv/config");
+const bodyParser = require('body-parser');
+
 
 //exicute packages
 const app =express();
@@ -12,12 +14,15 @@ const port = 3001;
 
 //makes a body when we do post request
 app.use(express.json());
+app.use(cors());
 
 //CReating a middlewere that exicutes everytime the route is running. 
-// app.use('/sessions')
+app.use(bodyParser.json());
+
 
 //Import routes
 const routesRoute = require('./routes/routes');
+const { populate } = require('./models/routes');
 
 app.use('/routes', routesRoute)
 
