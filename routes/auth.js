@@ -6,31 +6,31 @@ const router = express.Router()
 const signupTemplateCopy = require('../models/Signup')
 //oackage to cryp password
 const bcrypt =require('bcrypt')
+const {registerValidation, loginValidation} = require('../validation');
 
 
-//Validation. Using the package Joi to do so, which sends out automatical message
-const Joi = require('@hapi/joi');
-
-const schema = Joi.object({
-    fullName: Joi.string().min(2).required(),
-    userName:Joi.string().min(6).required(),
-    password:Joi.string().min(6).required(),
-});
 
 //When a user press the submit button and send the form input, it sends a post request to this route. 
 //When the router post will run, all functions inside will also run. 
 //The first argument is the path, and the next argument is the callback function. 
 router.post('/signup', async (req, res) =>{
 
-    //Validate the data before making a user
-    const {error} = schema.validate(req.body);
-    res.send(error.details[0].message)
+    //Validate the data before making a user, 
+    const {error} = registerValidation(req.body);
+    //if user did not type in correct, then the user will not be registered and an error message will be sent back. 
+    if(error) return res.status(400).send(error.details[0].message)
+
+    //Checking if the user is alreddy in the database
+    const userNameExists= await signupTemplateCopy.findOne({userName:req.body.userName})
+    //If the username alreddy exists a message will be sent
+    if(userNameExists) return res.status(400).send('Username alreddy existsts.')
 
     //crypting password  by hashing and salt
     const saltPassword = await bcrypt.genSalt(10)
     const securePassword = await bcrypt.hash(req.body.password, saltPassword)
 
-    //Making an instance of the model, takeing all the post requests and putting the values into the schema. 
+    //Creating a new user and making an instance of the model, 
+    //takeing all the post requests and putting the values into the schema. 
     const signupUser = new signupTemplateCopy({
         fullName: req.body.fullName,
         userName: req.body.userName,
