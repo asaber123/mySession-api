@@ -7,6 +7,7 @@ const signupTemplateCopy = require('../models/Signup')
 //oackage to cryp password
 const bcrypt = require('bcrypt')
 const { registerValidation, loginValidation } = require('../validation');
+const jwt = require('jsonwebtoken');
 
 
 
@@ -18,12 +19,12 @@ router.post('/signup', async (req, res) => {
     //Validate the data before making a user, 
     const { error } = registerValidation(req.body);
     //if user did not type in correct, then the user will not be registered and an error message will be sent back. 
-    if (error) return res.status(400).send(error.details[0].message)
+    if (error) return res.status(400).send({ message: error.details[0].message })
 
     //Checking if the user is alreddy in the database
     const userNameExists = await signupTemplateCopy.findOne({ userName: req.body.userName })
     //If the username alreddy exists a message will be sent
-    if (userNameExists) return res.status(400).send('Username alreddy existsts.')
+    if (userNameExists) return res.status(400).send({ message: 'Username alreddy existsts.' })
 
     //crypting password  by hashing and salt
     const saltPassword = await bcrypt.genSalt(10)
@@ -39,7 +40,7 @@ router.post('/signup', async (req, res) => {
     })
     try {
         const savedSignedupUser = await signupUser.save();
-        res.send(savedSignedupUser);
+        res.send(savedSignedupUser)
     }
     catch (err) {
         res.status(400).send(err);
@@ -54,20 +55,38 @@ router.post('/login', async (req, res) => {
     //Validate the data before making a user, 
     const { error } = loginValidation(req.body);
     //if user did not type in correct, then the user will not be registered and an error message will be sent back. 
-    if (error) return res.status(400).send(error.details[0].message)
+    if (error) {
+        return res.status(400).send({ message: error.details[0].message });
+    }
 
     //Checking if the user exists
-    const user = await signupTemplateCopy.findOne({ userName: req.body.userName })
+    const user = await signupTemplateCopy.findOne({ userName: req.body.userName });
     //If the username doesn not exists a message will be sent
-    if (!user) return res.status(400).send('User does not exists')
+    if (!user) {
+        return res.status(400).send({ message: 'User does not exists' });
+    }
     //Checking id password is correct
-    const validPassword= await bcrypt.compare(req.body.password, user.password)
+    const validPassword = await bcrypt.compare(req.body.password, user.password);
     //If password is not valid
-    if(!validPassword) return res.status(400).send('Username och password does not match. ')
-    res.send('Logged in!')
+    if (!validPassword) {
+        return res.status(400).send({ message: 'Username och password does not match. ' });
+    }
+    else{
+        res.send({ message: 'logged in' })
+    }
+
+    
+    // //Create and assign a token from the token package. This can be used to crypt and decrypt data. 
+    // //This is done to be able to send the username of the user to check if the user is logged in and verify that its the same user. 
+    // //This makes the user safe and make its not possible to hack the account.
+    // const token = jwt.sign({userName: user.userName}, process.env.TOKEN_SECRET)
+    // //Adding the data to the header in the fetch request
+    // res.header('auth-token', token).send({message:'Logged in'})
 
 
 })
+
+
 
 
 module.exports = router

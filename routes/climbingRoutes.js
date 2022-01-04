@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Route = require('../models/Routes');
+const verify = require('./verifyToken');
 
 //Routes
 
@@ -16,14 +17,14 @@ router.get('/', async (req, res) => {
 })
 
 //Posts information about a new route
-router.post('/', async (req, res) => {
+router.post('/',  async (req, res) => {
     //Create a new post
     const route = new Route({
         grade: req.body.grade,
         name: req.body.name,
         location: req.body.location,
         typeOfRoute: req.body.location
-    });
+        });
 
     //Saving data to database
     try {
