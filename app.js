@@ -3,14 +3,17 @@
 const { raw } = require('express');
 const express = require('express');
 const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo');
 require("dotenv/config");
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const session =require('express-session');
 
 //import routes
 const routesAuth = require('./routes/auth');
 const routesClimbingRoute = require('./routes/climbingRoutes');
 const { populate } = require('./models/Routes');
+
 
 
 //exicute packages
@@ -25,6 +28,16 @@ app.use(cors());
 //CReating a middlewere that exicutes everytime the route is running. 
 app.use(bodyParser.json());
 
+// //Session middlewere
+// app.use(
+//     session({
+//         cockie:{},
+//         resave:false,
+//         saveUnitalized:false,
+
+//     })
+// )
+
 
 
 //creating our routes as a middlewere
@@ -35,6 +48,8 @@ app.use('/api', routesAuth)
 //routes homepage
 app.get('/', (req, res) =>{
     res.send('We are homepage');
+    let username=''
+    if(req.session.username) username= req.session.username
 })
 
 //Connecting to our database which has the uri connection stored in .env. 

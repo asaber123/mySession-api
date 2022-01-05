@@ -52,6 +52,7 @@ router.post('/signup', async (req, res) => {
 //Login 
 router.post('/login', async (req, res) => {
 
+
     //Validate the data before making a user, 
     const { error } = loginValidation(req.body);
     //if user did not type in correct, then the user will not be registered and an error message will be sent back. 
@@ -71,20 +72,24 @@ router.post('/login', async (req, res) => {
     if (!validPassword) {
         return res.status(400).send({ message: 'Username och password does not match. ' });
     }
-    else{
-        res.send({ message: 'logged in' })
-    }
 
     
-    // //Create and assign a token from the token package. This can be used to crypt and decrypt data. 
-    // //This is done to be able to send the username of the user to check if the user is logged in and verify that its the same user. 
-    // //This makes the user safe and make its not possible to hack the account.
-    // const token = jwt.sign({userName: user.userName}, process.env.TOKEN_SECRET)
-    // //Adding the data to the header in the fetch request
-    // res.header('auth-token', token).send({message:'Logged in'})
+    //Create and assign a token from the token package. This can be used to crypt and decrypt data. 
+    //This is done to be able to send the username of the user to check if the user is logged in and verify that its the same user. 
+    //This makes the user safe and make its not possible to hack the account.
+    const token = jwt.sign({userName: user.userName}, process.env.TOKEN_SECRET)
+    //Adding the data to the header in the fetch request
+    res.header('auth-token', token).send({message:'Logged in'})
 
 
 })
+//logout
+router.post('/logout', async (req, res) => {
+    req.session.destroy(err=>{
+        res.redirect('/')
+    })
+})
+
 
 
 
