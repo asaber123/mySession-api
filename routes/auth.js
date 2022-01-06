@@ -8,6 +8,7 @@ const signupTemplateCopy = require('../models/Signup')
 const bcrypt = require('bcrypt')
 const { registerValidation, loginValidation } = require('../validation');
 const jwt = require('jsonwebtoken');
+const verify = require('./verifyToken');
 
 
 
@@ -79,9 +80,18 @@ router.post('/login', async (req, res) => {
     //This makes the user safe and make its not possible to hack the account.
     const token = jwt.sign({userName: user.userName}, process.env.TOKEN_SECRET)
     //Adding the data to the header in the fetch request
-    res.header('auth-token', token).send({message:'Logged in'})
+    res.header('auth-token', token).send({user:{user},message:{message:'sucess', token: token, username:user.userName}})
 
 
+})
+
+//Get user
+router.get('/user', verify, async(req, res) =>{
+    res.json({
+        user:{
+            username:'username'
+        }
+    })
 })
 //logout
 router.post('/logout', async (req, res) => {
