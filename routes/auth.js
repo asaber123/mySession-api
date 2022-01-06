@@ -82,6 +82,7 @@ router.post('/login', async (req, res) => {
     //Adding the data to the header in the fetch request
     res.header('auth-token', token).send({user:{user},message:{message:'sucess', token: token, username:user.userName}})
 
+    
 
 })
 
