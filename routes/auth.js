@@ -94,14 +94,12 @@ router.get('/user', verify, async(req, res) =>{
         }
     })
 })
-//logout
-router.post('/logout', async (req, res) => {
-    req.session.destroy(err=>{
-        res.redirect('/')
-    })
-})
-
-
+// //logout
+// router.post('/logout', async (req, res) => {
+//     req.session.destroy(err=>{
+//         res.redirect('/')
+//     })
+// })
 
 
 
