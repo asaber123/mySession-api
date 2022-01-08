@@ -13,6 +13,7 @@ const session =require('express-session');
 const routesAuth = require('./routes/auth');
 const routesClimbingRoute = require('./routes/climbingRoutes');
 const { populate } = require('./models/Routes');
+const verifyToken = require('./routes/verifyToken');
 
 
 
@@ -42,7 +43,7 @@ app.use(bodyParser.json());
 
 //creating our routes as a middlewere
 app.use('/api', routesClimbingRoute)
-app.use('/api', routesAuth)
+app.use('/auth', routesAuth)
 
 
 //routes homepage

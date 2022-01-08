@@ -1,5 +1,4 @@
 //This folder is responsible for the routes and requests that comes to the server. 
-const { response } = require('express');
 const express = require('express');
 const router = express.Router()
 //importing the schema that has been created
@@ -78,9 +77,9 @@ router.post('/login', async (req, res) => {
     //Create and assign a token from the token package. This can be used to crypt and decrypt data. 
     //This is done to be able to send the username of the user to check if the user is logged in and verify that its the same user. 
     //This makes the user safe and make its not possible to hack the account.
-    const token = jwt.sign({userName: user.userName}, process.env.TOKEN_SECRET)
+    const token = jwt.sign({userName: user.userName}, "CHANGEME")
     //Adding the data to the header in the fetch request
-    res.header('auth-token', token).send({user:{user},message:{message:'sucess', token: token, username:user.userName}})
+    res.header('auth-token', token).send({user:{user},message:{message:'success', token: token, username:user.userName}})
 
     
 
