@@ -9,7 +9,6 @@ const RoutesSchema = mongoose.Schema({
         type: Date,
         default: Date.now
     }
-
 })
 
 //Export model to mongo atlas and the schema that should be used
