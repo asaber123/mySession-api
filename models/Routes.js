@@ -5,6 +5,7 @@ const RoutesSchema = mongoose.Schema({
     name:String,
     location: String,
     typeOfRoute: String,
+    user: String,
     date: {
         type: Date,
         default: Date.now

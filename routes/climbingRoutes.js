@@ -1,3 +1,4 @@
+const { raw } = require('body-parser');
 const express = require('express');
 const router = express.Router();
 const Route = require('../models/Routes');
@@ -10,8 +11,8 @@ router.use(verify)
 //Get back all information about the toutes that is saved. 
 router.get('/', async (req, res) => {
     try {
-        const userName = req.user.userName
-        console.log(`Getting routes for user ${userName}`)
+        //  const userName = req.user.userName
+        // console.log(`Getting routes for user ${userName}`)}
         //TODO get routes for username
         const routes = await Route.find();
         res.json(routes);
@@ -24,14 +25,15 @@ router.get('/', async (req, res) => {
 //Posts information about a new route
 router.post('/',  async (req, res) => {
     //Create a new post
-    const userName = req.user.userName
-    console.log(`Posting route for user ${userName}`)
+    // const userName = req.user.userName
+    // console.log(`Posting route for user ${userName}`)
     //TODO add username to scheme
-    const route = new Route({
+    const route = await new Route({
         grade: req.body.grade,
         name: req.body.name,
         location: req.body.location,
-        typeOfRoute: req.body.location
+        typeOfRoute: req.body.location,
+        user: req.body.user
         });
 
     //Saving data to database
@@ -46,8 +48,8 @@ router.post('/',  async (req, res) => {
 //Get a specific route
 router.get('/:id', async (req, res) => {
     try {
-        const userName = req.user.userName
-        console.log(`Getting route for user ${userName}`)
+        // const userName = req.user.userName
+        // console.log(`Getting route for user ${userName}`)
         const route = await Route.findById(req.params.id);
         res.json(route);
     } catch (err) {
@@ -58,22 +60,22 @@ router.get('/:id', async (req, res) => {
 //Delete a speacific route. 
 router.delete('/:id', async (req, res) => {
     try {
-        const userName = req.user.userName
-        console.log(`Deleting route for user ${userName}`)
+        // const userName = req.user.userName
+        // console.log(`Deleting route for user ${userName}`)
         //TODO verify that the route belongs to the user
         //Removing the object that match the same id as the id that was sent in the url 
-       const deletedRoute = Route.remove({_id: req.params.id})
-       res.json (deletedRoute);
+       const deletedRoute = await Route.remove({_id: req.params.id})
+       res.json ('deleted log:');
     } catch (err) {
-        res.json({ message: err });
+        res.json({message: err});
     }
 })
 
 //Updating data from an object
 router.patch('/:id', async (req, res) => {
     try {
-        const userName = req.user.userName
-        console.log(`Updating route for user ${userName}`)
+        // const userName = req.user.userName
+        // console.log(`Updating route for user ${userName}`)
         //Removing the object that match the same id as the id that was sent in the url 
        const updatedRoute = Route.updateOne(
            {_id: req.params.id},
@@ -82,7 +84,8 @@ router.patch('/:id', async (req, res) => {
                name:req.body.name,
                location:req.body.location,
                typeOfRoute:req.body.typeOfRoute,
-               date: req.body.date
+               date: req.body.date,
+               user:req.body.user
 
            }})
        res.json (updatedRoute);
