@@ -11,10 +11,10 @@ router.use(verify)
 //Get back all information about the toutes that is saved. 
 router.get('/', async (req, res) => {
     try {
-        //  const userName = req.user.userName
+        const userName = req.userName
         // console.log(`Getting routes for user ${userName}`)}
         //TODO get routes for username
-        const routes = await Route.find();
+        const routes = await Route.find({user: userName});
         res.json(routes);
 
     } catch (err) {
@@ -24,20 +24,18 @@ router.get('/', async (req, res) => {
 
 //Posts information about a new route
 router.post('/',  async (req, res) => {
-    //Create a new post
-    // const userName = req.user.userName
-    // console.log(`Posting route for user ${userName}`)
-    //TODO add username to scheme
     const route = await new Route({
         grade: req.body.grade,
         name: req.body.name,
         location: req.body.location,
         typeOfRoute: req.body.location,
-        user: req.body.user
+        user: req.userName
         });
 
     //Saving data to database
     try {
+        console.log(route)
+        console.log(req.body)
         const savedRoute = await route.save()
         res.json(savedRoute);
     } catch (err) {
@@ -77,7 +75,7 @@ router.patch('/:id', async (req, res) => {
         // const userName = req.user.userName
         // console.log(`Updating route for user ${userName}`)
         //Removing the object that match the same id as the id that was sent in the url 
-       const updatedRoute = Route.updateOne(
+       const updatedRoute = await Route.updateOne(
            {_id: req.params.id},
            {$set:{
                grade:req.body.grade,

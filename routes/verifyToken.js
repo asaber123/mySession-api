@@ -9,13 +9,12 @@ module.exports= function (req,res,next){
     if (authHeader) {
         const token = authHeader.split(' ')[1];
 
-        jwt.verify(token, "CHANGEME", (err, user) => {
+        jwt.verify(token, process.env.TOKEN_SECRET, (err, claims) => {
             if (err) {
                 console.log(`Error ${err}`)
                 return res.sendStatus(403);
             }
-
-            req.user = user;
+            req.userName = claims.userName;
             next();
         });
     } else {
