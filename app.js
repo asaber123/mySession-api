@@ -19,8 +19,7 @@ const verifyToken = require('./routes/verifyToken');
 
 //exicute packages
 const app =express();
-const port = 3001;
-
+port = process.env.PORT || 3001;
 
 //makes a body when we do post request
 app.use(express.json());
