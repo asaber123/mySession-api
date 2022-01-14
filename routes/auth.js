@@ -10,6 +10,10 @@ const jwt = require('jsonwebtoken');
 const verify = require('./verifyToken');
 
 
+const Signup = require('../models/Signup');
+
+
+
 
 //When a user press the submit button and send the form input, it sends a post request to this route. 
 //When the router post will run, all functions inside will also run. 
@@ -80,26 +84,12 @@ router.post('/login', async (req, res) => {
     const claims = {userName: user.userName, "foobar": "bazfiz"};
     const token = jwt.sign(claims, process.env.TOKEN_SECRET)
     //Adding the data to the header in the fetch request
-    res.header('auth-token', token).send({user:{user},message:{message:'success', token: token, username:user.userName}})
+    res.header('auth-token', token).send({message:{message:'success', token: token, username:user.userName}})
 
     
 
 })
 
-//Get user
-router.get('/user', verify, async(req, res) =>{
-    res.json({
-        user:{
-            username:'username'
-        }
-    })
-})
-// //logout
-// router.post('/logout', async (req, res) => {
-//     req.session.destroy(err=>{
-//         res.redirect('/')
-//     })
-// })
 
 
 
