@@ -7,7 +7,6 @@ const signupTemplateCopy = require('../models/Signup')
 const bcrypt = require('bcrypt')
 const { registerValidation, loginValidation } = require('../validationMsg');
 const jwt = require('jsonwebtoken');
-const verify = require('../verifyToken');
 
 //ghg
 
