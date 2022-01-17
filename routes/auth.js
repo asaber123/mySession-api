@@ -30,7 +30,10 @@ router.post('/signup', async (req, res) => {
     //Checking if the user is alreddy in the database
     const userNameExists = await signupTemplateCopy.findOne({ userName: req.body.userName })
     //If the username alreddy exists a message will be sent
-    if (userNameExists) return res.status(400).send({ message: 'Username alreddy existsts.' })
+    if (userNameExists) 
+    {
+        return res.status(400).send({ message: 'Username alreddy existsts.' })
+    }
 
     //crypting password  by hashing and salt
     const saltPassword = await bcrypt.genSalt(10)
