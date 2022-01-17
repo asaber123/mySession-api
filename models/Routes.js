@@ -1,5 +1,6 @@
 const mongoose =require('mongoose');
 
+//This is the model for the mongoDb collection "Routes"
 const RoutesSchema = mongoose.Schema({
     grade: String,
     name:String,

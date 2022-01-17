@@ -5,12 +5,10 @@ const router = express.Router()
 const signupTemplateCopy = require('../models/Signup')
 //oackage to cryp password
 const bcrypt = require('bcrypt')
+//Importing validation modules
 const { registerValidation, loginValidation } = require('../validationMsg');
 const jwt = require('jsonwebtoken');
 const verify = require('../verifyToken');
-
-//ghg
-
 const Signup = require('../models/Signup');
 
 
@@ -21,7 +19,7 @@ const Signup = require('../models/Signup');
 //The first argument is the path, and the next argument is the callback function. 
 router.post('/signup', async (req, res) => {
 
-    //Validate the data before making a user, 
+    //Validate the input before sending data into the database, using joi package to do so. (check validationMsg.js)
     const { error } = registerValidation(req.body);
     //if user did not type in correct, then the user will not be registered and an error message will be sent back. 
     if (error) {
@@ -47,6 +45,7 @@ router.post('/signup', async (req, res) => {
         password: securePassword,
 
     })
+    //Saving object with values of the new user into database. 
     try {
         const savedSignedupUser = await signupUser.save();
         res.send(savedSignedupUser)
@@ -62,7 +61,7 @@ router.post('/signup', async (req, res) => {
 router.post('/login', async (req, res) => {
 
 
-    //Validate the data before making a user, 
+    //Validate the data before login, 
     const { error } = loginValidation(req.body);
     //if user did not type in correct, then the user will not be registered and an error message will be sent back. 
     if (error) {
@@ -86,7 +85,7 @@ router.post('/login', async (req, res) => {
     //Create and assign a token from the token package. This can be used to crypt and decrypt data. 
     //This is done to be able to send the username of the user to check if the user is logged in and verify that its the same user. 
     //This makes the user safe and make its not possible to hack the account.
-    const claims = {userName: user.userName, "foobar": "bazfiz"};
+    const claims = {userName: user.userName};
     const token = jwt.sign(claims, process.env.TOKEN_SECRET)
     //Adding the data to the header in the fetch request
     res.header('auth-token', token).send({message:{message:'success', token: token, username:user.userName}})

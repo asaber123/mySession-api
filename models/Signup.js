@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-//Here I create the model schema
+//This is the model for the mongoDb collection "myTable"
 
 const signupTemplate = new mongoose.Schema({
     fullName:{

@@ -19,10 +19,12 @@ const verifyToken = require('./verifyToken');
 
 //exicute packages
 const app =express();
+//Requires to deploy at heroku. 
 port = process.env.PORT || 3001;
 
 //makes a body when we do post request
 app.use(express.json());
+//Taking away cors issues. 
 app.use(cors());
 
 //CReating a middlewere that exicutes everytime the route is running. 
@@ -38,7 +40,6 @@ app.use('/auth', routesAuth)
 
 //routes homepage
 app.get('/', (req, res) =>{
-    res.send('We are homepage');
     let username=''
     if(req.session.username) username= req.session.username
 })
@@ -48,8 +49,6 @@ app.get('/', (req, res) =>{
 mongoose.connect(
     process.env.MONGODB_CONNECTION_STRING, () =>console.log("Connected to db")
     );
-
-
 
 //listening to the server
 app.listen(port,() =>{
