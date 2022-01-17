@@ -5,9 +5,9 @@ const router = express.Router()
 const signupTemplateCopy = require('../models/Signup')
 //oackage to cryp password
 const bcrypt = require('bcrypt')
-const { registerValidation, loginValidation } = require('../validation');
+const { registerValidation, loginValidation } = require('../validationMsg');
 const jwt = require('jsonwebtoken');
-const verify = require('./verifyToken');
+const verify = require('../verifyToken');
 
 //ghg
 

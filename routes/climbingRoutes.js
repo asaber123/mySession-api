@@ -1,8 +1,7 @@
-const { raw } = require('body-parser');
 const express = require('express');
 const router = express.Router();
 const Route = require('../models/Routes');
-const verify = require('./verifyToken');
+const verify = require('../verifyToken');
 
 router.use(verify)
 
@@ -34,8 +33,6 @@ router.post('/',  async (req, res) => {
 
     //Saving data to database
     try {
-        console.log(route)
-        console.log(req.body)
         const savedRoute = await route.save()
         res.json(savedRoute);
     } catch (err) {
