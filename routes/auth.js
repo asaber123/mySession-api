@@ -7,6 +7,7 @@ const signupTemplateCopy = require('../models/Signup')
 const bcrypt = require('bcrypt')
 const { registerValidation, loginValidation } = require('../validationMsg');
 const jwt = require('jsonwebtoken');
+const verify = require('../verifyToken');
 
 //ghg
 
@@ -23,8 +24,9 @@ router.post('/signup', async (req, res) => {
     //Validate the data before making a user, 
     const { error } = registerValidation(req.body);
     //if user did not type in correct, then the user will not be registered and an error message will be sent back. 
-    if (error) return res.status(400).send({ message: error.details[0].message })
-
+    if (error) {
+        return res.status(400).send({ message: error.details[0].message });
+    }
     //Checking if the user is alreddy in the database
     const userNameExists = await signupTemplateCopy.findOne({ userName: req.body.userName })
     //If the username alreddy exists a message will be sent
