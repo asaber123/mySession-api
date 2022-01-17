@@ -20,6 +20,8 @@ const verifyToken = require('./verifyToken');
 //exicute packages
 const app =express();
 //Requires to deploy at heroku. 
+
+
 port = process.env.PORT || 3001;
 
 //makes a body when we do post request
@@ -28,6 +30,7 @@ app.use(express.json());
 app.use(cors());
 
 //CReating a middlewere that exicutes everytime the route is running. 
+
 app.use(bodyParser.json());
 
 

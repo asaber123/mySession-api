@@ -29,7 +29,8 @@ router.post('/',  async (req, res) => {
         name: req.body.name,
         location: req.body.location,
         typeOfRoute: req.body.location,
-        user: req.userName
+        user: req.userName,
+        date: req.body.date
         });
 
     //Saving  teh data to database
