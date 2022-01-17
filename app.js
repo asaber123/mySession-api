@@ -28,15 +28,6 @@ app.use(cors());
 //CReating a middlewere that exicutes everytime the route is running. 
 app.use(bodyParser.json());
 
-// //Session middlewere
-// app.use(
-//     session({
-//         cockie:{},
-//         resave:false,
-//         saveUnitalized:false,
-
-//     })
-// )
 
 
 
