@@ -28,7 +28,7 @@ router.post('/',  async (req, res) => {
         grade: req.body.grade,
         name: req.body.name,
         location: req.body.location,
-        typeOfRoute: req.body.location,
+        typeOfRoute: req.body.typeOfRoute,
         user: req.userName,
         date: req.body.date
         });
